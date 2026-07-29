@@ -1,204 +1,259 @@
-# PPO Racing Agent
+# 🏎️ PPO Racing Agent
 
-> A custom implementation of Proximal Policy Optimization (PPO) in PyTorch for a modified Gymnasium CarRacing environment using engineered numerical observations instead of raw image inputs.
+> A reinforcement learning project that uses engineered state representations and a custom implementation of Proximal Policy Optimization (PPO) in PyTorch to autonomously navigate a modified Gymnasium CarRacing environment.
+
+<p align="center">
+
+![Python](https://img.shields.io/badge/Python-3.11-blue)
+![PyTorch](https://img.shields.io/badge/PyTorch-2.x-red)
+![Gymnasium](https://img.shields.io/badge/Gymnasium-CarRacing-green)
+![PPO](https://img.shields.io/badge/Reinforcement%20Learning-PPO-orange)
+![License](https://img.shields.io/badge/License-MIT-yellow)
+
+</p>
+---
+
+## 🎥 Demo
+
+<p align="center">
+  <img src="assets/demo.gif" width="900">
+</p>
+
+<p align="center">
+<i>The trained PPO agent driving autonomously in the modified CarRacing environment.</i>
+</p>
+
+For the full-resolution demonstration, see **assets/demo.mp4**.
+---
+
+## 📖 Overview
+
+Autonomous racing is commonly approached by training reinforcement learning agents directly from raw RGB images using convolutional neural networks. While effective, image-based policies require significantly more computation and learning complexity.
+
+This project explores an alternative approach by replacing image observations with an engineered numerical state representation extracted from the environment. These handcrafted features provide compact, task-relevant information that enables the agent to focus on decision-making rather than visual perception.
+
+The project includes a modified Gymnasium CarRacing environment, a custom implementation of Proximal Policy Optimization (PPO) in PyTorch, and a complete training and evaluation pipeline for continuous autonomous driving.
+---
+
+## ✨ Features
+
+- 🏎️ **Modified Gymnasium CarRacing Environment** with engineered numerical observations.
+- 🧠 **Custom PPO Implementation** built from scratch in PyTorch for continuous control.
+- 📊 **Engineered State Representation** replacing raw RGB image observations with compact, task-relevant features.
+- 🎯 **Reward Engineering** designed to encourage stable and efficient driving behavior.
+- 🚗 **Continuous Action Space** supporting smooth steering, throttle, and braking.
+- 📈 **Training & Evaluation Pipeline** with checkpointing, testing, and reward visualization.
+- 📄 **Comprehensive Project Report** documenting the methodology, implementation, and results.
 
 ---
 
-## Overview
+## 📈 Results
 
-Most reinforcement learning solutions for the Gymnasium CarRacing environment learn directly from raw 96×96 RGB images. While effective, image-based observations require convolutional neural networks and significantly increase computational complexity.
+### Training Performance
 
-This project explores an alternative approach by replacing raw pixel observations with a compact numerical observation vector containing carefully engineered geometric and kinematic features.
+<p align="center">
+  <img src="assets/training_reward_curve.png" width="700">
+</p>
 
-The environment is based on the official **Gymnasium CarRacing** environment but has been extensively modified to support numerical observations, custom reward shaping, and improved reinforcement learning experimentation.
-
-A complete Proximal Policy Optimization (PPO) algorithm was implemented in PyTorch to train and evaluate the agent.
-
----
-
-## Project Highlights
-
-- Custom PPO implementation in PyTorch
-- Modified Gymnasium CarRacing environment
-- Numerical observation space
-- Engineered path-angle cues
-- Heading error computation
-- Custom reward shaping
-- Beta-distribution policy for continuous actions
-- Generalized Advantage Estimation (GAE)
-- PPO clipped objective
-- Model checkpointing
-- Training reward visualization
-- Evaluation script
+<p align="center">
+<i>Training reward progression of the custom PPO agent.</i>
+</p>
 
 ---
 
-## Project Origin
+### Environment
 
-This project is built upon the **Gymnasium CarRacing** environment developed by the Farama Foundation.
+<p align="center">
+  <img src="assets/environment.png" width="700">
+</p>
 
-The original environment was extensively modified to support a different reinforcement learning pipeline.
-
-Major modifications include:
-
-- Replacing RGB image observations with engineered numerical observations
-- Designing a compact observation vector
-- Adding path-angle cues
-- Computing heading error
-- Modifying the reward function
-- Implementing a complete PPO training pipeline in PyTorch
-- Adding checkpointing and evaluation utilities
-
-The original Gymnasium project provides the simulation environment, while this repository focuses on the reinforcement learning algorithm and environment modifications.
+<p align="center">
+<i>The trained agent navigating the modified Gymnasium CarRacing environment.</i>
+</p>
 
 ---
 
-## Repository Structure
+### Summary
+
+| Component | Description |
+|-----------|-------------|
+| Algorithm | Proximal Policy Optimization (PPO) |
+| Framework | PyTorch |
+| Environment | Modified Gymnasium CarRacing |
+| Observation Space | Engineered Numerical State Representation |
+| Action Space | Continuous (Steering, Throttle, Brake) |
+---
+
+## 🧠 Engineered Observation Space
+
+Instead of training directly on raw RGB images, the agent receives a compact numerical state representation designed to capture the information required for autonomous driving.
+
+The observation space provides task-relevant features that reduce input dimensionality while preserving essential information about the vehicle's state and the upcoming track geometry.
+
+### Observation Features
+
+| Feature | Description |
+|---------|-------------|
+| Speed | Current vehicle speed. |
+| Heading Error | Difference between the vehicle heading and the track direction. |
+| Path Angle Probes | Angular information sampled from multiple points ahead on the track. |
+| Track Geometry | Numerical representation of the upcoming road layout. |
+| Vehicle Dynamics | Information required for stable control and decision-making. |
+
+### Why Engineered Observations?
+
+- Reduce the complexity of learning compared to image-based inputs.
+- Provide compact and interpretable state information.
+- Allow the policy to focus on driving decisions instead of visual feature extraction.
+- Enable faster experimentation and easier debugging during development.
+---
+
+## ⚙️ PPO Implementation
+
+The agent is trained using a custom implementation of **Proximal Policy Optimization (PPO)** developed in **PyTorch** for continuous control in the modified CarRacing environment.
+
+### Key Components
+
+- **Actor-Critic Architecture** for separate policy and value estimation.
+- **Continuous Action Policy** producing steering, throttle, and brake commands.
+- **Generalized Advantage Estimation (GAE)** for stable advantage computation.
+- **Clipped PPO Objective** to prevent destructive policy updates.
+- **Entropy Regularization** to encourage exploration during training.
+- **Mini-batch Optimization** over collected rollout data.
+- **Gradient Clipping** for improved training stability.
+- **Model Checkpointing** for saving and resuming training.
+
+The implementation is designed to integrate seamlessly with the engineered observation space, enabling efficient policy learning while maintaining stable training dynamics.
+---
+
+## 📂 Repository Structure
 
 ```text
 ppo-racing-agent/
 │
+├── assets/
+│   ├── demo.gif
+│   ├── demo.mp4
+│   ├── environment.png
+│   └── reward_curve.png
+│
+├── docs/
+│   └── detailed_report.pdf
+│
 ├── models/
+│   ├── custom_ppo_best.pt
+│   ├── custom_ppo_latest.pt
+│   └── README.md
+│
+├── environment.py
 ├── train_agent.py
 ├── test_agent.py
-├── test.py
-├── README.md
 ├── requirements.txt
-└── .gitignore
+├── LICENSE
+└── README.md
 ```
 
+### File Descriptions
+
+| File | Description |
+|------|-------------|
+| `environment.py` | Modified Gymnasium CarRacing environment with engineered observations. |
+| `train_agent.py` | Trains the custom PPO agent from scratch. |
+| `test_agent.py` | Loads a trained model and evaluates its performance. |
+| `models/` | Pretrained checkpoints and model documentation. |
+| `assets/` | Demo videos, screenshots, and training plots. |
+| `docs/` | Detailed project report and supporting documentation. |
 ---
 
-## Observation Space
+## 🚀 Installation
 
-Instead of processing raw RGB images, the agent receives a numerical observation vector describing the current driving state.
-
-The observation vector contains features including:
-
-- Vehicle speed
-- Heading error
-- Path-angle cues
-- Track-relative information
-- Additional geometric driving features
-
-This representation greatly reduces the observation dimensionality while preserving the information required for effective driving.
-
----
-
-## Reward Function
-
-The reward function is designed to encourage:
-
-- Staying on the racing track
-- Following the track direction
-- Smooth steering behaviour
-- Forward progress
-- Efficient lap completion
-- Avoiding off-track driving
-
-The reward function was refined through multiple iterations during development.
-
----
-
-## PPO Implementation
-
-The training algorithm is a custom implementation of Proximal Policy Optimization (PPO) written entirely in PyTorch.
-
-Implemented components include:
-
-- Actor-Critic neural network
-- Beta action distribution
-- Generalized Advantage Estimation (GAE)
-- PPO clipped surrogate objective
-- Entropy regularization
-- Gradient clipping
-- Mini-batch optimization
-- Model checkpointing
-- Resume training support
-
----
-
-## Installation
-
-Clone the repository:
+### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/<YOUR_USERNAME>/ppo-racing-agent.git
+git clone https://github.com/rohitpodugu488t/ppo-racing-agent.git
 cd ppo-racing-agent
 ```
 
-Install the required packages:
+### 2. Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
+### 3. Verify Installation
+
+Ensure all required dependencies are installed successfully before training or evaluating the agent.
 ---
 
-## Training
+## ▶️ Usage
+
+### Train the Agent
+
+Train a PPO agent from scratch using:
 
 ```bash
 python train_agent.py
 ```
 
+During training, the script:
+
+- Collects experience from the modified environment
+- Computes Generalized Advantage Estimation (GAE)
+- Optimizes the Actor-Critic network using PPO
+- Periodically saves model checkpoints
+- Logs training rewards
+
 ---
 
-## Evaluation
+### Evaluate a Trained Agent
+
+Run inference using a saved checkpoint:
 
 ```bash
 python test_agent.py
 ```
 
+The evaluation script loads a trained policy and demonstrates autonomous driving in the modified CarRacing environment.
 ---
 
-## Results
+## 📄 Project Report
 
-The repository includes:
+A detailed report describing the project motivation, environment modifications, PPO implementation, experiments, and results is available in:
 
-- Trained PPO checkpoints
-- Training reward curves
-- Evaluation script
+```text
+docs/detailed_report.pdf
+```
 
-Future updates will include:
-
-- Demonstration GIF
-- Environment screenshots
-- Training plots
-- Architecture diagrams
-
+The report provides additional implementation details and experimental analysis beyond the scope of this README.
 ---
 
-## Future Work
+## 🔮 Future Work
 
-- Parallel environment training
-- Curriculum learning
-- Hyperparameter optimization
-- Domain randomization
+Potential directions for extending this project include:
+
 - Multi-track generalization
-- Performance benchmarking
-
+- Hyperparameter optimization
+- Curriculum learning
+- Parallel environment training
+- Domain randomization
+- Comparison with image-based reinforcement learning agents
+- Benchmarking against other reinforcement learning algorithms
 ---
 
-## Technologies Used
+## 📚 References
 
-- Python
-- PyTorch
-- Gymnasium
-- Box2D
-- NumPy
-- Matplotlib
-
+- Schulman, J., et al. *Proximal Policy Optimization Algorithms*. arXiv:1707.06347.
+- Farama Foundation. *Gymnasium Documentation*.
+- PyTorch Documentation.
 ---
 
-## License
+## 🙏 Acknowledgements
 
-This project is licensed under the MIT License.
+This project builds upon the contributions of the open-source reinforcement learning community.
 
----
+Special thanks to:
 
-## Acknowledgements
-
-- Gymnasium (Farama Foundation)
-- PyTorch
-- Box2D
-- Stable-Baselines3 (used as a reinforcement learning reference during development)
+- **Farama Foundation** for maintaining the Gymnasium project.
+- **OpenAI** for the original Gym project.
+- The authors of the **Proximal Policy Optimization (PPO)** algorithm.
+- The **PyTorch** team for the deep learning framework used in this project.
