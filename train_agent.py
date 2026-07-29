@@ -15,7 +15,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.distributions import Beta
 
-from test import CarRacing
+from environment import CarRacing
 
 
 DEFAULT_SAVE_DIR = Path("models")
